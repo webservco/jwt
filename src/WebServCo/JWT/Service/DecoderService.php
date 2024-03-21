@@ -1,0 +1,50 @@
+<?php
+
+declare(strict_types=1);
+
+namespace WebServCo\JWT\Service;
+
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+use Override;
+use UnexpectedValueException;
+use WebServCo\Configuration\Contract\ConfigurationGetterInterface;
+use WebServCo\JWT\Contract\DecoderServiceInterface;
+use WebServCo\JWT\DataTransfer\Payload;
+
+use function property_exists;
+use function sprintf;
+
+final class DecoderService implements DecoderServiceInterface
+{
+    private const ALGORITHM = 'HS256';
+
+    private Key $key;
+
+    public function __construct(ConfigurationGetterInterface $configurationGetter)
+    {
+        $this->key = new Key(
+            $configurationGetter->getString('JWT_SECRET'),
+            self::ALGORITHM,
+        );
+    }
+
+    /**
+     * JWT class: there is only static access
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    #[Override]
+    public function decodeJwt(string $jwt): Payload
+    {
+        $payload = JWT::decode($jwt, $this->key);
+
+        foreach (['iss', 'sub'] as $key) {
+            if (!property_exists($payload, $key)) {
+                throw new UnexpectedValueException(sprintf('Payload is missing required property "%s"', $key));
+            }
+        }
+
+        return new Payload((string) $payload->iss, (string) $payload->sub);
+    }
+}
