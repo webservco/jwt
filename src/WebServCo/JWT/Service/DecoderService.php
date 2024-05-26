@@ -8,7 +8,6 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Override;
 use UnexpectedValueException;
-use WebServCo\Configuration\Contract\ConfigurationGetterInterface;
 use WebServCo\JWT\Contract\DecoderServiceInterface;
 use WebServCo\JWT\DataTransfer\Payload;
 
@@ -21,12 +20,9 @@ final class DecoderService implements DecoderServiceInterface
 
     private Key $key;
 
-    public function __construct(ConfigurationGetterInterface $configurationGetter)
+    public function __construct(string $jwtSecret)
     {
-        $this->key = new Key(
-            $configurationGetter->getString('JWT_SECRET'),
-            self::ALGORITHM,
-        );
+        $this->key = new Key($jwtSecret, self::ALGORITHM);
     }
 
     /**

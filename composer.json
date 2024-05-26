@@ -27,7 +27,6 @@
     "require": {
         "php" : "^8.2",
         "firebase/php-jwt": "^6",
-        "webservco/configuration": "^0",
         "webservco/data": "^0"
     },
     "require-dev": {
