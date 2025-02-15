@@ -11,8 +11,10 @@ use UnexpectedValueException;
 use WebServCo\JWT\Contract\DecoderServiceInterface;
 use WebServCo\JWT\DataTransfer\Payload;
 
+use function is_scalar;
 use function property_exists;
 use function sprintf;
+use function strval;
 
 final class DecoderService implements DecoderServiceInterface
 {
@@ -28,7 +30,7 @@ final class DecoderService implements DecoderServiceInterface
     /**
      * JWT class: there is only static access
      *
-     * @SuppressWarnings(PHPMD.StaticAccess)
+     * @SuppressWarnings("PHPMD.StaticAccess")
      */
     #[Override]
     public function decodeJwt(string $jwt): Payload
@@ -39,6 +41,14 @@ final class DecoderService implements DecoderServiceInterface
             if (!property_exists($payload, $key)) {
                 throw new UnexpectedValueException(sprintf('Payload is missing required property "%s"', $key));
             }
+        }
+
+        if (!is_scalar($payload->iss)) {
+            throw new UnexpectedValueException(sprintf('Payload iss is not scalar.'));
+        }
+
+        if (!is_scalar($payload->sub)) {
+            throw new UnexpectedValueException(sprintf('Payload iss is not scalar.'));
         }
 
         return new Payload((string) $payload->iss, (string) $payload->sub);
