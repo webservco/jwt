@@ -14,7 +14,6 @@ use WebServCo\JWT\DataTransfer\Payload;
 use function is_scalar;
 use function property_exists;
 use function sprintf;
-use function strval;
 
 final class DecoderService implements DecoderServiceInterface
 {
@@ -44,11 +43,11 @@ final class DecoderService implements DecoderServiceInterface
         }
 
         if (!is_scalar($payload->iss)) {
-            throw new UnexpectedValueException(sprintf('Payload iss is not scalar.'));
+            throw new UnexpectedValueException('Payload iss is not scalar.');
         }
 
         if (!is_scalar($payload->sub)) {
-            throw new UnexpectedValueException(sprintf('Payload iss is not scalar.'));
+            throw new UnexpectedValueException('Payload iss is not scalar.');
         }
 
         return new Payload((string) $payload->iss, (string) $payload->sub);
