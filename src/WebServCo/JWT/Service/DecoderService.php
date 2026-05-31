@@ -17,7 +17,7 @@ use function sprintf;
 
 final class DecoderService implements DecoderServiceInterface
 {
-    private const ALGORITHM = 'HS256';
+    private const string ALGORITHM = 'HS256';
 
     private Key $key;
 
