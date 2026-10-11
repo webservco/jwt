@@ -20,7 +20,7 @@
             "dealerdirect/phpcodesniffer-composer-installer": true
         }
     },
-    "description" : "A PHP component/library.",
+    "description" : "A PHP component/library. Decodes and verifies an HS256 JSON Web Token and returns its issuer and subject.",
     "homepage" : "https://webserv.co",
     "keywords" : [
         "component",
